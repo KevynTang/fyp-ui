@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import Checked from 'mdi-react/CheckIcon'
 import Tags from 'mdi-react/TagMultipleIcon'
@@ -32,10 +32,78 @@ import DeleteIcon from 'mdi-react/DeleteIcon';
 import FileEditIcon from 'mdi-react/FileEditIcon';
 import ImageUpload from 'mdi-react/UploadIcon'
 import { useOutletContext } from 'react-router-dom';
+import ImageCover from '../components/ImageCover';
+
+interface ImageDetails {
+    src: string
+    name: string
+    iid: string
+    tags: string[]
+    description: string
+    segments: number
+    size: string
+    uploadAt: string
+}
 
 const Gallery = () => {
 
-    const [displayMenu, setDisplayMenu] = useOutletContext<any[]>()
+    const [displayMenu, setDisplayMenu, displayLoading, setDisplayLoading] = useOutletContext<any[]>()
+    const [selectedImg, setSelectedImg] = useState(1)
+    const [imageDetails, setImageDetails] = useState<ImageDetails>({
+        src: c11,
+        name: "beautifulday.jpg",
+        iid: "2b9c5f3a8e7d6b4c1f0a9e8d7c6b5a40",
+        description: "sample image",
+        segments: 1,
+        tags: ["Daily"],
+        size: "257.18KB",
+        uploadAt: "2023 / 03 / 01 21:11:28",
+    })
+
+    const imageDetail1 = {
+        src: c11,
+        name: "beautifulday.jpg",
+        iid: "2b9c5f3a8e7d6b4c1f0a9e8d7c6b5a40",
+        description: "sample image",
+        segments: 1,
+        tags: ["Daily"],
+        size: "257.18KB",
+        uploadAt: "2023 / 03 / 01 21:11:28",
+    }
+
+    const imageDetail2 = {
+        src: c12,
+        iid: "a875b6f10e8e14f207b96f17478faa10",
+        name: "life_is_a_travel.jpg",
+        description: "sample image",
+        segments: 1,
+        tags: ["Daily", "Travel"],
+        size: "318.26KB",
+        uploadAt: "2023 / 03 / 16 13:41:57",
+    }
+
+    const imageDetail3 = {
+        src: c21,
+        iid: "b9a4c3e20f7f18d306a85e28394d6b12",
+        name: "travel_the_world.jpg",
+        description: "a beautiful travel photo",
+        segments: 2,
+        tags: ["Travel", "Beauty", "Lifestyle"],
+        size: "1.2MB",
+        uploadAt: "2023/03/17 09:23:45",
+    }
+
+
+    // DF
+    const clickOnImage = (imgKey: number, imgDetails: ImageDetails, time: number) => {
+        setDisplayLoading(true)
+        setTimeout(() => {
+            setSelectedImg(imgKey)
+            setImageDetails(imgDetails)
+            setDisplayLoading(false)
+        }, time)
+    }
+
 
     return (
         <div className='grid grid-cols-2 space-x-8 p-8 h-full'>
@@ -56,52 +124,54 @@ const Gallery = () => {
                     </div>
                 </div>
                 <div className='w-full flex'>
+                    <div className='text-center py-4 px-8 text-xl font-bold cursor-pointer bg-violet-100 border border-violet-400 text-violet-900 transition-colors flex'><Checked className='mr-2 relative top-0.5 bottom-2' size={24} />All</div>
                     <div className='text-center py-4 px-8 text-xl font-bold text-violet-900 cursor-pointer hover:bg-violet-50 transition-colors'>Daily</div>
                     <div className='text-center py-4 px-8 text-xl font-bold text-violet-900 cursor-pointer hover:bg-violet-50 transition-colors'>Fashion</div>
                     <div className='text-center py-4 px-8 text-xl font-bold text-violet-900 cursor-pointer hover:bg-violet-50 transition-colors'>Beauty</div>
                     <div className='text-center py-4 px-8 text-xl font-bold text-violet-900 cursor-pointer hover:bg-violet-50 transition-colors'>Lifestyle</div>
-                    <div className='text-center py-4 px-8 text-xl font-bold cursor-pointer bg-violet-100 border border-violet-400 text-violet-900 transition-colors flex'><Checked className='mr-2 relative top-0.5 bottom-2' size={24} /> Travel</div>
+                    <div className='text-center py-4 px-8 text-xl font-bold text-violet-900 cursor-pointer hover:bg-violet-50 transition-colors'>Travel</div>
+                    {/* <div className='text-center py-4 px-8 text-xl font-bold cursor-pointer bg-violet-100 border border-violet-400 text-violet-900 transition-colors flex'><Checked className='mr-2 relative top-0.5 bottom-2' size={24} /> Travel</div> */}
                     <div className='text-center py-4 px-8 text-xl font-bold text-violet-900 cursor-pointer hover:bg-violet-50 transition-colors'>Fitness</div>
                     <div className='text-center py-4 px-8 text-xl font-bold text-violet-900 cursor-pointer hover:bg-violet-50 transition-colors'>Dance</div>
                     <div className='text-center py-4 px-8 text-xl font-bold text-violet-900 cursor-pointer hover:bg-violet-50 transition-colors'>Art</div>
                 </div>
                 <div className="grid grid-cols-3 bg-stone-50 p-1 gap-4">
                     <div className="flex flex-col items-center h-fit">
-                        <img src={c11} alt="" className="mb-4 w-full" />
-                        <img src={c12} alt="" className="mb-4 w-full border-4 border-violet-500" />
-                        <img src={c13} alt="" className="mb-4 w-full" />
-                        <img src={c14} alt="" className="mb-4 w-full" />
-                        <img src={c15} alt="" className="mb-4 w-full" />
-                        <img src={c16} alt="" className="mb-4 w-full" />
+                        <ImageCover onClick={() => { clickOnImage(1, imageDetail1, 1326) }} src={c11} selected={selectedImg == 1} />
+                        <ImageCover onClick={() => { clickOnImage(2, imageDetail2, 1513) }} src={c12} selected={selectedImg == 4} />
+                        <ImageCover onClick={() => { setSelectedImg(7) }} src={c13} selected={selectedImg == 7} />
+                        <ImageCover onClick={() => { setSelectedImg(10) }} src={c14} selected={selectedImg == 10} />
+                        <ImageCover onClick={() => { setSelectedImg(13) }} src={c15} selected={selectedImg == 13} />
+                        <ImageCover onClick={() => { setSelectedImg(16) }} src={c16} selected={selectedImg == 16} />
                     </div>
                     <div className="flex flex-col items-center h-fit">
-                        <img src={c21} alt="" className="mb-4 w-full" />
-                        <img src={c22} alt="" className="mb-4 w-full" />
-                        <img src={c23} alt="" className="mb-4 w-full" />
-                        <img src={c24} alt="" className="mb-4 w-full" />
-                        <img src={c25} alt="" className="mb-4 w-full" />
-                        <img src={c26} alt="" className="mb-4 w-full" />
+                        <ImageCover src={c21} onClick={() => { clickOnImage(3, imageDetail3, 1826) }} selected={selectedImg == 2} />
+                        <ImageCover src={c22} onClick={() => { setSelectedImg(5) }} selected={selectedImg == 5} />
+                        <ImageCover src={c23} onClick={() => { setSelectedImg(8) }} selected={selectedImg == 8} />
+                        <ImageCover src={c24} onClick={() => { setSelectedImg(11) }} selected={selectedImg == 11} />
+                        <ImageCover src={c25} onClick={() => { setSelectedImg(14) }} selected={selectedImg == 14} />
+                        <ImageCover src={c26} onClick={() => { setSelectedImg(17) }} selected={selectedImg == 17} />
                     </div>
                     <div className="flex flex-col items-center h-fit">
-                        <img src={c31} alt="" className="mb-4 w-full" />
-                        <img src={c32} alt="" className="mb-4 w-full" />
-                        <img src={c33} alt="" className="mb-4 w-full" />
-                        <img src={c34} alt="" className="mb-4 w-full" />
-                        <img src={c35} alt="" className="mb-4 w-full" />
-                        <img src={c36} alt="" className="mb-4 w-full" />
+                        <ImageCover src={c31} onClick={() => { setSelectedImg(3) }} selected={selectedImg == 3} />
+                        <ImageCover src={c32} onClick={() => { setSelectedImg(6) }} selected={selectedImg == 6} />
+                        <ImageCover src={c33} onClick={() => { setSelectedImg(9) }} selected={selectedImg == 9} />
+                        <ImageCover src={c34} onClick={() => { setSelectedImg(12) }} selected={selectedImg == 12} />
+                        <ImageCover src={c35} onClick={() => { setSelectedImg(15) }} selected={selectedImg == 15} />
+                        <ImageCover src={c36} onClick={() => { setSelectedImg(18) }} selected={selectedImg == 18} />
                     </div>
                 </div>
             </div>
 
             <div className='max-h-full overflow-scroll scrollbar-none'>
                 <div className='h-1/2 w-full bg-stone-100 mb-8 rounded-md'>
-                    <img src={c12} alt="" className='h-full mb-8 mx-auto' />
+                    <img src={imageDetails.src} alt="" className='h-full mb-8 mx-auto' />
                 </div>
                 <div className='w-full mb-8'>
                     <div className="bg-white rounded-lg shadow-md p-6">
                         <div className="flex-shrink-0">
                             <div className='flex mb-2'>
-                                <h2 className="text-3xl font-bold mb-4 flex-shrink-0 cursor-pointer">Another Day of Missing the Major</h2>
+                                <h2 className="text-3xl font-bold mb-4 flex-shrink-0 cursor-pointer">{imageDetails.name}</h2>
                                 <div className='w-full flex justify-end'>
                                     <div className='w-fit pl-1 pr-2 py-1 cursor-pointer border-b border-violet-900 mx-4'>
                                         <FileEditIcon className='text-violet-400 mb-1 ml-1 inline-block' size={32} />
@@ -115,30 +185,32 @@ const Gallery = () => {
                             </div>
                             <div>
                                 <div className="flex p-2">
-                                    <div><span className="text-stone-800 mb-1 mr-1">FID:</span></div>
-                                    <div className="flex justify-end w-full"><span className='text-stone-400 px-1 py-0.5 cursor-pointer rounded-md text-md'>a875b6f10e8e14f207b96f17478faa10</span></div>
+                                    <div><span className="text-stone-800 mb-1 mr-1">IID:</span></div>
+                                    <div className="flex justify-end w-full"><span className='text-stone-400 px-1 py-0.5 cursor-pointer rounded-md text-md'>{ imageDetails.iid }</span></div>
+                                </div>
+                                <div className="flex p-2">
+                                    <div className="flex-shrink-0"><span className="text-stone-800 mb-1 mr-1">Tags:</span></div>
+                                    <div className="flex justify-end w-full">
+                                        <div className="flex flex-wrap mb-2">
+                                            {imageDetails.tags.map((tag, index) => <span key={index} className="text-violet-900 font-extrabold py-1 px-2 mr-2 mb-2 border-b border-violet-900 cursor-pointer">{tag}</span>)}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="flex p-2">
+                                    <div><span className="text-stone-800 mb-1 mr-1">Description:</span></div>
+                                    <div className="flex justify-end w-full"><span className='text-stone-400 px-1 py-0.5 cursor-pointer rounded-md text-md'>{ imageDetails.description }</span></div>
                                 </div>
                                 <div className="flex p-2">
                                     <div><span className="text-stone-800 mb-1 mr-1">Segments:</span></div>
-                                    <div className="flex justify-end w-full"><span className='text-stone-400 px-1 py-0.5 cursor-pointer rounded-md text-md'>1</span></div>
+                                    <div className="flex justify-end w-full"><span className='text-stone-400 px-1 py-0.5 cursor-pointer rounded-md text-md'>{ imageDetails.segments }</span></div>
                                 </div>
                                 <div className="flex p-2">
                                     <div><span className="text-stone-800 mb-1 mr-1">Size:</span></div>
-                                    <div className="flex justify-end w-full"><span className='text-stone-400 px-1 py-0.5 cursor-pointer rounded-md text-md'>8.28KB</span></div>
-                                </div>
-                                <div className="flex p-2">
-                                    <div><span className="text-stone-800 mb-1 mr-1">Category:</span></div>
-                                    <div className="flex justify-end w-full"><span className='text-stone-400 px-1 py-0.5 cursor-pointer rounded-md text-md'>Doc</span></div>
+                                    <div className="flex justify-end w-full"><span className='text-stone-400 px-1 py-0.5 cursor-pointer rounded-md text-md'>{ imageDetails.size }</span></div>
                                 </div>
                                 <div className="flex p-2">
                                     <div className="flex-shrink-0"><span className="text-stone-800 mb-1 mr-1">Upload At:</span></div>
-                                    <div className="flex justify-end w-full"><span className='text-stone-400 px-1 py-0.5 cursor-pointer rounded-md text-md'>2023 / 08 / 01 22:11:28</span></div>
-                                </div>
-                                <div className="flex p-2">
-                                    <div className="flex-shrink-0 mr-8"><span className="text-stone-800 mb-1 mr-1">Description:</span></div>
-                                    <div className="flex justify-end w-full"><span className='text-stone-400 px-1 py-0.5 cursor-pointer rounded-md text-md'>
-                                        I wrote a letter for a woman who wanted to reject a man’s proposal. I did not understand her feelings, so I wrote her words literally. She was angry with me and said I ruined her chances. I learned that writing letters is not easy
-                                    </span></div>
+                                    <div className="flex justify-end w-full"><span className='text-stone-400 px-1 py-0.5 cursor-pointer rounded-md text-md'>{ imageDetails.uploadAt }</span></div>
                                 </div>
                             </div>
                         </div>

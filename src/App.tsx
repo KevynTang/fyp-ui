@@ -3,9 +3,11 @@ import { Outlet } from 'react-router-dom'
 import Footer from './components/Footer';
 import Header from './components/Header'
 import MenuBoard from './components/MenuBoard';
+import Loading from './components/Loading';
 
 function App() {
 
+  const [displayLoading, setDisplayLoading] = useState(false)
   const [displayMenu, setDisplayMenu] = useState(false)
 
   return (
@@ -14,8 +16,9 @@ function App() {
         <Header />
         {/* <div className='h-12'></div> */}
         <div className='h-full max-h-full'>
+          <Loading display={displayLoading} setDisplay={setDisplayLoading} />
           <MenuBoard display={displayMenu} setDisplay={setDisplayMenu} />
-          <Outlet context={[displayMenu, setDisplayMenu]} />
+          <Outlet context={[displayMenu, setDisplayMenu, displayLoading, setDisplayLoading]} />
         </div>
       </div>
       {/* <Footer /> */}

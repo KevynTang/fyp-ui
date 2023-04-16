@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useEffect, useState } from "react"
 import wallpaper from '../assets/home.jpg'
 import Login from 'mdi-react/LoginIcon'
 import Learn from 'mdi-react/LearnIcon'
@@ -9,7 +9,24 @@ import NoteStorage from 'mdi-react/NoteTextIcon'
 import FileStorage from 'mdi-react/FolderIcon'
 import MailShare from 'mdi-react/EmailIcon'
 
+import { AuthClient } from "@dfinity/auth-client"
+import { useOutletContext } from "react-router-dom"
+
 function Home() {
+
+    const [displayMenu, setDisplayMenu, displayLoading, setDisplayLoading] = useOutletContext<any[]>()
+    const [isAuthenticated, setIsAuthenticated] = useState(false)
+
+    const login = async () => {
+        const authClient = await AuthClient.create()
+        authClient.login()
+        setDisplayLoading(true)
+        setTimeout(() => {
+            setDisplayLoading(false)
+            setIsAuthenticated(true)
+        }, 2114)
+    }
+
     return (
         <div className="w-full h-full grid grid-cols-2 bg-gradient-to-br from-white to-violet-50">
             <div className="h-[110%] w-[110%] relative -top-24 -left-40 shadow-2xl rotate-[5deg] bg-violet-900">
@@ -31,7 +48,10 @@ function Home() {
                 </div>
                 <div className="w-full py-16 grid grid-cols-1 place-items-center">
                     <div className="flex">
-                        <div className='w-fit h-fit py-2 pl-1 pr-4 cursor-pointer border rounded-lg bg-violet-700 hover:shadow-lg transition-all border-violet-900 mx-4'>
+                        <div hidden={!isAuthenticated} className='w-fit h-fit cursor-pointer py-2 pl-1 pr-4 rounded-lg transition-all mx-4'>
+                            <span className='text-2xl text-violet-700 font-sans font-bold relative top-0.5'>Welcome back, Violet_0925! </span>
+                        </div>
+                        <div hidden={isAuthenticated} onClick={login} className='w-fit h-fit py-2 pl-1 pr-4 cursor-pointer border rounded-lg bg-violet-700 hover:shadow-lg transition-all border-violet-900 mx-4'>
                             <Login className='text-stone-50 ml-1 inline-block' size={32} />
                             <span className='ml-2 text-md text-stone-50 font-sans font-bold relative top-0.5'>Login with Internet Identity</span>
                         </div>

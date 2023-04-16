@@ -3,6 +3,11 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@dfinity/agent": "^0.15.5",
+    "@dfinity/auth-client": "^0.15.5",
+    "@dfinity/candid": "^0.15.5",
+    "@dfinity/identity": "^0.15.5",
+    "@dfinity/principal": "^0.15.5",
     "@tailwindcss/line-clamp": "^0.4.2",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
